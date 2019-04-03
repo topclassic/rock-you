@@ -1,42 +1,83 @@
 import React, { Component } from "react";
 import styled from "styled-components";
-import { Card, Button, Form, Input, Icon } from "antd";
+import { Card, Button, Form, Input, Icon, Tooltip, notification } from "antd";
+import { validateNumber } from "../../utils/validate";
+import { normalizeDigit } from "../../utils/normalize";
 import CalSmallestAmount from "../../utils/calSmallestAmount";
 
+const Circle = styled.span`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 16px;
+  width: 16px;
+  background-color: #e2e2e2;
+  border-radius: 50%;
+`;
+
+const GroupRight = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+`;
+
+const text = "Calculate smallest quantity of bill and coins";
 class CalContainer extends Component {
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
         if (values.amount) {
-          console.log(
-            ' CalSmallestAmount("124.67");',
-            CalSmallestAmount("124.67")
-          );
+          notification.success({
+            duration: 0,
+            message: `Calculate amount with ${values.amount}`,
+            description: CalSmallestAmount(values.amount)
+          });
         }
-        console.log("Received values of form: ", values);
       }
     });
   };
   render() {
     const { getFieldDecorator } = this.props.form;
-    console.log("CalSmallestAmount");
     return (
-      <Form layout="inline" onSubmit={this.handleSubmit}>
-        <Card style={{ width: 300, height: 150 }}>
+      <Form onSubmit={this.handleSubmit}>
+        <Card
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column"
+          }}
+        >
           <Form.Item>
             {getFieldDecorator("amount", {
-              rules: [{ required: true, message: "Please input number" }]
+              normalize: value => normalizeDigit(value),
+              rules: [
+                {
+                  validator: (rule, value, callback) =>
+                    validateNumber(rule, value, callback),
+                  required: true
+                }
+              ]
             })(
               <Input
-                suffix={<Icon type="exclamation" />}
+                style={{ width: 250 }}
+                suffix={
+                  <Tooltip placement="right" title={text}>
+                    <Circle>
+                      <Icon style={{ fontSize: 10 }} type="question" />
+                    </Circle>
+                  </Tooltip>
+                }
                 placeholder="number"
               />
             )}
           </Form.Item>
-          <Button type="primary" htmlType="submit">
-            Calculate
-          </Button>
+          <GroupRight>
+            <Button type="primary" htmlType="submit">
+              Calculate
+            </Button>
+          </GroupRight>
         </Card>
       </Form>
     );

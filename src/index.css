@@ -12,3 +12,11 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+
+.ant-form-inline .ant-form-item-with-help {
+  margin-bottom: 10px;
+}
+
+.ant-form-item {
+  margin-bottom: 10px;
+}

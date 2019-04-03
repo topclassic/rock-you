@@ -1,5 +1,5 @@
-import { bill, cent } from "../constant/amount";
-import * as R from "ramda";
+import { bill, cent } from "../constants/amount";
+import pluralize from "pluralize";
 
 const convertDigit = (value, digit) => {
   return `${value
@@ -8,6 +8,13 @@ const convertDigit = (value, digit) => {
     .reverse()
     .join("")
     .charAt(digit)}`;
+};
+
+const checkPluralNoun = (name, value) => {
+  if (value <= 1) {
+    return name;
+  }
+  return pluralize.plural(name);
 };
 
 const checkBill = value => {
@@ -22,13 +29,20 @@ const checkBill = value => {
   arrObj.forEach((obj, index) => {
     if (index === 0) {
       if (value >= bill[obj]) {
-        data = `${parseInt(value / bill[obj], 10)} ${bill[obj]} dollar bill`;
+        calDigi = `${parseInt(value / bill[obj], 10)}`;
+        data = `${calDigi} ${bill[obj]} dollar ${checkPluralNoun(
+          "bill",
+          calDigi
+        )}`;
         txt = txt ? `${txt}, ${data}` : `${data}`;
       }
     } else {
       if (digitTen >= bill[obj]) {
-        calDigi = parseInt(digitTen / bill[obj]);
-        data = `${calDigi} ${bill[obj]} dollar bill`;
+        calDigi = parseInt(digitTen / bill[obj], 10);
+        data = `${calDigi} ${bill[obj]} dollar ${checkPluralNoun(
+          "bill",
+          calDigi
+        )}`;
         txt = txt ? `${txt}, ${data}` : `${data}`;
         digitTen = digitTen - bill[obj] * calDigi;
       }
@@ -46,7 +60,7 @@ const checkCent = value => {
   arrObj.forEach(obj => {
     if (digi >= cent[obj]) {
       calDigi = parseInt(digi / cent[obj], 10);
-      data = `${calDigi} ${obj}`;
+      data = `${calDigi} ${checkPluralNoun(obj, calDigi)}`;
       txt = txt ? `${txt}, ${data}` : `${data}`;
       digi = digi - cent[obj] * calDigi;
     }
@@ -60,12 +74,19 @@ const calculate = value => {
   if (arrValue.length > 1) {
     const digit = checkBill(parseInt(arrValue[0], 10));
     const decimal = checkCent(parseInt(arrValue[1], 10));
-    amount = digit ? `Your change is ${digit}, ${decimal}` : `Your change is ${decimal}`;
+    amount = digit
+      ? `Your change is ${digit}, ${decimal}`
+      : `Your change is ${decimal}`;
   } else {
     amount = `Your change is ${checkBill(parseInt(arrValue[0], 10))}`;
   }
-  return amount;
+  const arrAmount = amount.split(",");
+  arrAmount.splice(
+    arrAmount.length - 1,
+    1,
+    ` and${arrAmount[arrAmount.length - 1]}`
+  );
+  return arrAmount.toString();
 };
 
 export default calculate;
-
