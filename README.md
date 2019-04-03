@@ -1,6 +1,6 @@
 ## Calculation amount with bill and cents
 
-Output the smallest quantity of bill and coins
+Output the smallest quantity of bill and cent
 
 ### `npm start`
 
