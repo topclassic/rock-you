@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`NormalizeDigit testing func normalizeDigit('') 1`] = `""`;
+
+exports[`NormalizeDigit testing func normalizeDigit(100) 1`] = `"100"`;
+
+exports[`NormalizeDigit testing func normalizeDigit(A) 1`] = `""`;

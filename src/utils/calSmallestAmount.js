@@ -81,12 +81,16 @@ const calculate = value => {
     amount = `Your change is ${checkBill(parseInt(arrValue[0], 10))}`;
   }
   const arrAmount = amount.split(",");
-  arrAmount.splice(
-    arrAmount.length - 1,
-    1,
-    ` and${arrAmount[arrAmount.length - 1]}`
-  );
-  return arrAmount.toString();
+  if (arrAmount.length > 1) {
+    arrAmount.splice(
+      arrAmount.length - 1,
+      1,
+      ` and${arrAmount[arrAmount.length - 1]}`
+    );
+    amount = arrAmount.toString();
+  }
+
+  return amount;
 };
 
 export default calculate;

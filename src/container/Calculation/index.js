@@ -22,7 +22,10 @@ const GroupRight = styled.div`
 `;
 
 const text = "Calculate smallest quantity of bill and coins";
-class CalContainer extends Component {
+export class CalContainer extends Component {
+  static defaultProps = {
+    form: {}
+  };
   handleSubmit = e => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {

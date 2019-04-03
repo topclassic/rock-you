@@ -1,0 +1,7 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`CalSmallestAmount testing func CalSmallestAmount(.99) 1`] = `"Your change is 3 quarters, 2 dimes, and 4 pennies"`;
+
+exports[`CalSmallestAmount testing func CalSmallestAmount(100) 1`] = `"Your change is 1 100 dollar bill"`;
+
+exports[`CalSmallestAmount testing func CalSmallestAmount(124.67) 1`] = `"Your change is 1 100 dollar bill, 1 20 dollar bill, 4 1 dollar bills, 2 quarters, 1 dime, 1 nickel, and 2 pennies"`;
